@@ -117,7 +117,7 @@ def layout(title, meta, body, path, active="", extra_head=""):
 <main>%s</main>
 <footer class="foot"><div class="wrap">
 <div>&copy; %s Decorateursgids.be. Onafhankelijke gids over het afwerken en aankleden van een woning.</div>
-<div><a href="/over/">Over</a><a href="/contact/">Contact</a><a href="/privacybeleid/">Privacybeleid</a><a href="/cookiebeleid/">Cookiebeleid</a><a href="/sitemap.xml">Sitemap</a></div>
+<div><a href="/over/">Over</a><a href="/contact/">Contact</a><a href="/partners/">Partners</a><a href="/privacybeleid/">Privacybeleid</a><a href="/cookiebeleid/">Cookiebeleid</a><a href="/sitemap.xml">Sitemap</a></div>
 </div></footer>
 </body>
 </html>""" % (esc(title), esc(meta), canonical, esc(title), esc(meta), canonical, CSS, extra_head,
@@ -260,13 +260,34 @@ def cookies():
 <p>Cookies zijn in elke browser te bekijken en te verwijderen via de instellingen onder privacy of sitegegevens.</p>"""
     simple("/cookiebeleid/", "Cookiebeleid | Decorateursgids.be", "Decorateursgids.be plaatst zelf geen cookies. Wat er wel kan gebeuren en hoe cookies beheerd worden.", "Cookiebeleid", ph)
 
+PARTNERS = [
+    ('Sleutelhangers.be', 'Sleutelhangers.be bedrukt sleutelhangers en vouwmeters met eigen logo.', 'https://www.sleutelhangers.be/vouwmeters-bedrukken', 'vouwmeter bedrukken'),
+    ('Huissteden', 'Huissteden levert naaimachines, garen en toebehoren.', 'https://www.huissteden.nl/garen-vlies/naaigaren', 'naaimachine garen'),
+    ('Het Schippertje', 'Het Schippertje verkoopt sierlijsten en ornamenten voor wand en plafond.', 'https://www.het-schippertje.nl/sierlijsten/', 'sierlijsten muur'),
+    ('Aluwdoors', 'Aluwdoors maakt stalen binnendeuren in uiteenlopende afwerkingen.', 'https://www.aluwdoors.com/stalen-deuren/gouden-deuren/', 'een gouden deur'),
+    ('Dakraam.nl', 'Dakraam.nl levert dakramen en bijbehorende raamdecoratie.', 'https://dakraam.nl/producten/raamdecoraties/', 'raamdecoraties'),
+    ('De Bloemist', 'De Bloemist bezorgt bloemen en ballonnen aan huis.', 'https://debloemist.nl/ballon-bezorgen', 'Ballon versturen'),
+    ('Bouwbeslag.nl', 'Bouwbeslag.nl levert deurbeslag, waaronder deurklinken in brons.', 'https://bouwbeslag.nl/deurklink/brons', 'deurbeslag brons'),
+]
+
+def partners():
+    cards = "".join(
+        '<div class="card"><h3>%s</h3><p>%s</p><span class="go">%s</span></div>' % (esc(n), esc(d), ext(u, a))
+        for n, d, u, a in PARTNERS)
+    body = ('<div class="wrap"><div class="page"><p class="crumbs"><a href="/">Home</a> / Partners</p>'
+            '<h1>Partners en bronnen</h1>'
+            '<p>Decorateursgids.be verwijst hier naar externe partners en bronnen.</p></div>'
+            '<div class="grid" style="margin:0 0 64px">%s</div></div>' % cards)
+    write("/partners/", layout("Partners en bronnen | Decorateursgids.be",
+          "Externe partners en bronnen waar Decorateursgids.be naar verwijst.", body, "/partners/", "/partners/"))
+
 def notfound():
     body = '<div class="wrap"><div class="page"><h1>Pagina niet gevonden</h1><p>Deze pagina bestaat niet of is verplaatst. Alle thema\'s staan op <a href="/gids/">de themapagina</a>.</p></div></div>'
     with open(os.path.join(OUT, "404.html"), "w", encoding="utf-8") as f:
         f.write(layout("Pagina niet gevonden | Decorateursgids.be", "Deze pagina bestaat niet.", body, "/404.html"))
 
 def sitemap():
-    urls = ["/", "/gids/", "/over/", "/contact/", "/privacybeleid/", "/cookiebeleid/"] + ["/gids/%s/" % t["slug"] for t in THEMES]
+    urls = ["/", "/gids/", "/over/", "/contact/", "/partners/", "/privacybeleid/", "/cookiebeleid/"] + ["/gids/%s/" % t["slug"] for t in THEMES]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         "<url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n" % (SITE["url"], u, TODAY) for u in urls) + "</urlset>\n"
     with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
@@ -285,7 +306,7 @@ def main():
     home(); gids_index()
     for i, t in enumerate(THEMES):
         theme_page(i, t)
-    over(); contact(); privacy(); cookies(); notfound(); sitemap()
+    over(); contact(); partners(); privacy(); cookies(); notfound(); sitemap()
     n = sum(len(f) for _, _, f in os.walk(OUT))
     print("gebouwd:", n, "bestanden in", OUT)
 
