@@ -215,7 +215,7 @@ def theme_page(i, t):
                        "".join("<li>%s</li>" % esc(k) for k in t["kort"]), "".join(toc),
                        esc(p["name"]), esc(p["blurb"]), ext(p["url"], p["anchor"]).replace('<a ', '<a class="btn" '))
     schema = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":%s,"description":%s,"inLanguage":"nl-BE","datePublished":"%s","mainEntityOfPage":"%s","publisher":{"@type":"Organization","name":"Decorateursgids.be","url":"%s"}}</script>""" % (
-        _j(t["h1"]), _j(t["meta"]), TODAY, SITE["url"] + "/gids/%s/" % t["slug"], SITE["url"])
+        _j(t["h1"]), _j(t["meta"]), "2026-09-06", SITE["url"] + "/gids/%s/" % t["slug"], SITE["url"])
     ttl = "%s | Decorateursgids.be" % t["h1"]
     if len(ttl) > 70: ttl = t["h1"]
     write("/gids/%s/" % t["slug"], layout(ttl, t["meta"], body, "/gids/%s/" % t["slug"], "/gids/", schema))
