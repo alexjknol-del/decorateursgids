@@ -268,6 +268,8 @@ PARTNERS = [
     ('Dakraam.nl', 'Dakraam.nl levert dakramen en bijbehorende raamdecoratie.', 'https://dakraam.nl/producten/raamdecoraties/', 'raamdecoraties'),
     ('De Bloemist', 'De Bloemist bezorgt bloemen en ballonnen aan huis.', 'https://debloemist.nl/ballon-bezorgen', 'Ballon versturen'),
     ('Bouwbeslag.nl', 'Bouwbeslag.nl levert deurbeslag, waaronder deurklinken in brons.', 'https://bouwbeslag.nl/deurklink/brons', 'deurbeslag brons'),
+    ('Goedkope Slotenmaker', 'Goedkope Slotenmaker is een Nederlandse wegwijzer naar slotenmakers, geordend per provincie en gemeente.', 'https://www.goedkopeslotenmaker.nl/', 'goedkopeslotenmaker.nl'),
+    ('ProductenHuren.nl', 'ProductenHuren.nl vergelijkt huuraanbod van huishoudelijke apparaten, waaronder koelkasten voor tijdelijk gebruik.', 'https://productenhuren.nl/koelkasten/', 'Koelkast huren'),
 ]
 
 def partners():
