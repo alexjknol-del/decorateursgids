@@ -270,6 +270,7 @@ PARTNERS = [
     ('Bouwbeslag.nl', 'Bouwbeslag.nl levert deurbeslag, waaronder deurklinken in brons.', 'https://bouwbeslag.nl/deurklink/brons', 'deurbeslag brons'),
     ('Goedkope Slotenmaker', 'Goedkope Slotenmaker is een Nederlandse wegwijzer naar slotenmakers, geordend per provincie en gemeente.', 'https://www.goedkopeslotenmaker.nl/', 'goedkopeslotenmaker.nl'),
     ('ProductenHuren.nl', 'ProductenHuren.nl vergelijkt huuraanbod van huishoudelijke apparaten, waaronder koelkasten voor tijdelijk gebruik.', 'https://productenhuren.nl/koelkasten/', 'Koelkast huren'),
+    ('Bedshop', 'Bedshop verkoopt beddengoed en bedtextiel, met hoeslakens in katoen, jersey en percal voor de gangbare matrasmaten.', 'https://www.bedshop.nl/bedmode/bedtextiel/hoeslakens/', 'hoeslakens'),
 ]
 
 def partners():
