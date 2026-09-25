@@ -330,3 +330,20 @@ OVER = {
         "Vragen of opmerkingen over de inhoud kunnen per e-mail naar info@decorateursgids.be.",
     ],
 }
+
+
+# Blogs van externe auteurs; brontekst staat in blog/<file>.
+BLOGS = [
+    {"slug": "roomspray-gebruik-geuren-en-tips", "file": "roomspray.txt", "datum": "2026-09-25", "datum_nl": "25 september 2026",
+     "mt": "Roomspray: gebruik, geuren, ingrediënten en tips",
+     "meta": "Wat roomspray is, hoe het effectief gebruikt wordt, welke geuren er zijn, waar het in huis past en waar op te letten bij duurzame en vegan opties."},
+    {"slug": "aannemers-in-nederland", "file": "aannemers.txt", "datum": "2026-09-25", "datum_nl": "25 september 2026",
+     "mt": "Aannemers in Nederland: rol, betrouwbaarheid en keuze",
+     "meta": "De rol van aannemers in de bouw, het belang van ervaring, soorten bouwprojecten, het bouwteam, duurzaamheid en veelgestelde vragen over aannemers."},
+    {"slug": "spiraalkneder-werking-en-voordelen", "file": "spiraalkneder.txt", "datum": "2026-09-25", "datum_nl": "25 september 2026",
+     "mt": "Spiraalkneder: werking, kenmerken en voordelen",
+     "meta": "Hoe een spiraalkneder werkt, welke capaciteit nodig is, het verschil met een standaard keukenmixer en tips voor onderhoud en reiniging."},
+    {"slug": "villas-in-canggu-bali", "file": "canggu.txt", "datum": "2026-09-25", "datum_nl": "25 september 2026",
+     "mt": "Villa's in Canggu: luxe wonen en investeren op Bali",
+     "meta": "Waarom villa's in Canggu gewild zijn: architectuur, rendement en bezettingsgraad, de wijken Berawa, Batu Bolong en Echo Beach en tips bij de keuze."},
+]
