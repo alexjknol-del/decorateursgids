@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Generator voor decorateursgids.be. Geen dependencies. Bouwt dist/."""
 import os, shutil, html, datetime
-from content import SITE, THEMES, OVER
+from content import SITE, THEMES, OVER, BLOGS
+import re
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist")
 TODAY = datetime.date.today().isoformat()
@@ -87,7 +88,7 @@ SWATCH_COLORS = ["#b5532c","#d8a072","#e8d5b7","#6e7d5f","#3d4a3a","#8b6f4e","#c
 def esc(s): return html.escape(s, quote=True)
 
 def nav(active=""):
-    items = [("/", "Home"), ("/gids/", "Thema's"), ("/over/", "Over"), ("/contact/", "Contact")]
+    items = [("/", "Home"), ("/gids/", "Thema's"), ("/over/", "Over"), ("/blog/", "Blog"), ("/contact/", "Contact")]
     return "".join('<a href="%s"%s>%s</a>' % (h, ' class="on"' if h == active else "", t) for h, t in items)
 
 def layout(title, meta, body, path, active="", extra_head=""):
@@ -117,7 +118,7 @@ def layout(title, meta, body, path, active="", extra_head=""):
 <main>%s</main>
 <footer class="foot"><div class="wrap">
 <div>&copy; %s Decorateursgids.be. Onafhankelijke gids over het afwerken en aankleden van een woning.</div>
-<div><a href="/over/">Over</a><a href="/contact/">Contact</a><a href="/partners/">Partners</a><a href="/privacybeleid/">Privacybeleid</a><a href="/cookiebeleid/">Cookiebeleid</a><a href="/sitemap.xml">Sitemap</a></div>
+<div><a href="/over/">Over</a><a href="/contact/">Contact</a><a href="/blog/">Blog</a><a href="/partners/">Partners</a><a href="/privacybeleid/">Privacybeleid</a><a href="/cookiebeleid/">Cookiebeleid</a><a href="/sitemap.xml">Sitemap</a></div>
 </div></footer>
 </body>
 </html>""" % (esc(title), esc(meta), canonical, esc(title), esc(meta), canonical, CSS, extra_head,
@@ -260,6 +261,45 @@ def cookies():
 <p>Cookies zijn in elke browser te bekijken en te verwijderen via de instellingen onder privacy of sitegegevens.</p>"""
     simple("/cookiebeleid/", "Cookiebeleid | Decorateursgids.be", "Decorateursgids.be plaatst zelf geen cookies. Wat er wel kan gebeuren en hoe cookies beheerd worden.", "Cookiebeleid", ph)
 
+_LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)]+)\)")
+
+def _inline(t):
+    out, i = [], 0
+    for m in _LINK.finditer(t):
+        out.append(esc(t[i:m.start()])); out.append(ext(m.group(2), m.group(1))); i = m.end()
+    out.append(esc(t[i:]))
+    return "".join(out)
+
+def _blog_src(b):
+    lines = [l.rstrip("\n") for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "blog", b["file"]), encoding="utf-8") if l.strip()]
+    h1, o, ul = lines[0][2:].strip(), [], []
+    def flush():
+        if ul: o.append("<ul>" + "".join("<li>%s</li>" % _inline(x) for x in ul) + "</ul>"); ul.clear()
+    for l in lines[1:]:
+        if l.startswith("- "): ul.append(l[2:]); continue
+        flush()
+        if l.startswith("## "): o.append("<h2>%s</h2>" % esc(l[3:]))
+        else: o.append("<p>%s</p>" % _inline(l))
+    flush()
+    return h1, "\n".join(o)
+
+def blog_index():
+    cards = "".join('<a class="card" href="/blog/%s/"><span class="nr">%s</span><h3>%s</h3><p>%s</p><span class="go">Lees de blog</span></a>'
+                    % (b["slug"], b["datum_nl"], esc(b["mt"]), esc(b["meta"])) for b in BLOGS)
+    body = ('<div class="wrap"><section class="themes" style="padding-top:48px"><p class="crumbs"><a href="/">Home</a> / Blog</p>'
+            '<h1 style="font-size:40px;font-weight:400;margin:0 0 6px">Blog</h1>'
+            '<p class="lead">Bijdragen over wonen, inrichten, bouwen en alles wat daar in en rond het huis bij komt kijken.</p>'
+            '<div class="grid">%s</div></section></div>' % cards)
+    write("/blog/", layout("Blog | Decorateursgids.be", "Blogs op Decorateursgids.be over wonen, inrichten, bouwen en de keuzes die daarbij horen, van roomspray tot aannemers.", body, "/blog/", "/blog/"))
+
+def blog_page(b):
+    h1, inner = _blog_src(b)
+    body = ('<div class="wrap"><div class="page"><p class="crumbs"><a href="/">Home</a> / <a href="/blog/">Blog</a> / %s</p>'
+            '<h1>%s</h1><p class="kicker">%s</p>%s</div></div>' % (esc(h1), esc(h1), b["datum_nl"], inner))
+    schema = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":%s,"description":%s,"inLanguage":"nl-BE","datePublished":"%s","mainEntityOfPage":"%s","publisher":{"@type":"Organization","name":"Decorateursgids.be","url":"%s"}}</script>' % (
+        _j(h1), _j(b["meta"]), b["datum"], SITE["url"] + "/blog/%s/" % b["slug"], SITE["url"])
+    write("/blog/%s/" % b["slug"], layout(b["mt"] + " | Decorateursgids.be" if len(b["mt"]) <= 50 else b["mt"], b["meta"], body, "/blog/%s/" % b["slug"], "/blog/", schema))
+
 PARTNERS = [
     ('Sleutelhangers.be', 'Sleutelhangers.be bedrukt sleutelhangers en vouwmeters met eigen logo.', 'https://www.sleutelhangers.be/vouwmeters-bedrukken', 'vouwmeter bedrukken'),
     ('Huissteden', 'Huissteden levert naaimachines, garen en toebehoren.', 'https://www.huissteden.nl/garen-vlies/naaigaren', 'naaimachine garen'),
@@ -270,9 +310,9 @@ PARTNERS = [
     ('Bouwbeslag.nl', 'Bouwbeslag.nl levert deurbeslag, waaronder deurklinken in brons.', 'https://bouwbeslag.nl/deurklink/brons', 'deurbeslag brons'),
     ('Goedkope Slotenmaker', 'Goedkope Slotenmaker is een Nederlandse wegwijzer naar slotenmakers, geordend per provincie en gemeente.', 'https://www.goedkopeslotenmaker.nl/', 'goedkopeslotenmaker.nl'),
     ('ProductenHuren.nl', 'ProductenHuren.nl vergelijkt huuraanbod van huishoudelijke apparaten, waaronder koelkasten voor tijdelijk gebruik.', 'https://productenhuren.nl/koelkasten/', 'Koelkast huren'),
+    ('Nazrom', 'Nazrom verkoopt inductiebeschermers en inductiematjes die een kookplaat beschermen tegen krassen, tijdens en na het koken.', 'https://www.nazrom.nl/', 'nazrom.nl'),
+    ('Zandcompleet', 'Zandcompleet levert zand, grind, split en grond, in bigbags of losgestort, met levering door heel Nederland.', 'https://www.zandcompleet.nl/', 'zandcompleet.nl'),
     ('Bedshop', 'Bedshop verkoopt beddengoed en bedtextiel, met hoeslakens in katoen, jersey en percal voor de gangbare matrasmaten.', 'https://www.bedshop.nl/bedmode/bedtextiel/hoeslakens/', 'hoeslakens'),
-    ('Nazrom', 'Nazrom levert bestratingsmaterialen en sierbestrating voor tuin en oprit.', 'https://www.nazrom.nl/', 'nazrom.nl'),
-    ('Zandcompleet', 'Zandcompleet levert zand, grond en granulaten in bigbags en los gestort.', 'https://www.zandcompleet.nl/', 'zandcompleet.nl'),
 ]
 
 def partners():
@@ -284,7 +324,7 @@ def partners():
             '<p>Decorateursgids.be verwijst hier naar externe partners en bronnen.</p></div>'
             '<div class="grid" style="margin:0 0 64px">%s</div></div>' % cards)
     write("/partners/", layout("Partners en bronnen | Decorateursgids.be",
-          "Externe partners en bronnen waar Decorateursgids.be naar verwijst.", body, "/partners/", "/partners/"))
+          "Externe partners, winkels en bronnen waar Decorateursgids.be naar verwijst, van woontextiel en deurbeslag tot zand en grind.", body, "/partners/", "/partners/"))
 
 def notfound():
     body = '<div class="wrap"><div class="page"><h1>Pagina niet gevonden</h1><p>Deze pagina bestaat niet of is verplaatst. Alle thema\'s staan op <a href="/gids/">de themapagina</a>.</p></div></div>'
@@ -292,7 +332,7 @@ def notfound():
         f.write(layout("Pagina niet gevonden | Decorateursgids.be", "Deze pagina bestaat niet.", body, "/404.html"))
 
 def sitemap():
-    urls = ["/", "/gids/", "/over/", "/contact/", "/partners/", "/privacybeleid/", "/cookiebeleid/"] + ["/gids/%s/" % t["slug"] for t in THEMES]
+    urls = ["/", "/gids/", "/over/", "/contact/", "/partners/", "/privacybeleid/", "/cookiebeleid/", "/blog/"] + ["/gids/%s/" % t["slug"] for t in THEMES] + ["/blog/%s/" % b["slug"] for b in BLOGS]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(
         "<url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n" % (SITE["url"], u, TODAY) for u in urls) + "</urlset>\n"
     with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
@@ -311,7 +351,10 @@ def main():
     home(); gids_index()
     for i, t in enumerate(THEMES):
         theme_page(i, t)
-    over(); contact(); partners(); privacy(); cookies(); notfound(); sitemap()
+    over(); contact(); partners(); blog_index()
+    for b in BLOGS:
+        blog_page(b)
+    privacy(); cookies(); notfound(); sitemap()
     n = sum(len(f) for _, _, f in os.walk(OUT))
     print("gebouwd:", n, "bestanden in", OUT)
 
