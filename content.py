@@ -334,6 +334,9 @@ OVER = {
 
 # Blogs van externe auteurs; brontekst staat in blog/<file>.
 BLOGS = [
+    {"slug": "vochtvlekken-plafond-eerst-de-oorzaak", "file": "vochtvlekken-plafond.txt", "datum": "2026-09-27", "datum_nl": "27 september 2026",
+     "mt": "Vochtvlekken op het plafond: eerst de oorzaak, dan de verf",
+     "meta": "Waarom een vochtvlek op het plafond niet zomaar overgeschilderd wordt, hoe de oorzaak wordt gevonden en wanneer het dak de bron is."},
     {"slug": "roomspray-gebruik-geuren-en-tips", "file": "roomspray.txt", "datum": "2026-09-25", "datum_nl": "25 september 2026",
      "mt": "Roomspray: gebruik, geuren, ingrediënten en tips",
      "meta": "Wat roomspray is, hoe het effectief gebruikt wordt, welke geuren er zijn, waar het in huis past en waar op te letten bij duurzame en vegan opties."},
