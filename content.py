@@ -334,6 +334,21 @@ OVER = {
 
 # Blogs van externe auteurs; brontekst staat in blog/<file>.
 BLOGS = [
+    {"slug": "tijdelijke-woning-aankleden", "file": "tijdelijke-woning-aankleden.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
+     "mt": "Een tijdelijke woning aankleden in een paar dagen",
+     "meta": "Een kale tijdelijke woning in enkele dagen bewoonbaar maken: wat eerst komt, raamdecoratie en vloer, neutrale keuzes, montage en kopen of huren."},
+    {"slug": "muurverf-kiezen-meer-dan-kleur", "file": "muurverf-kiezen.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
+     "mt": "Muurverf kiezen: meer dan alleen de kleur",
+     "meta": "Waarom de soort muurverf net zo zwaar weegt als de kleur: silicaatverf, dampopen wanden, de bestaande ondergrond en de invloed van een matte afwerking."},
+    {"slug": "japandi-eettafel-kiezen", "file": "japandi-eettafel.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
+     "mt": "Japandi eettafel: hout, vorm en verhoudingen",
+     "meta": "Wat een japandi eettafel onderscheidt, hoe houtsoort, vorm en afwerking samenhangen en hoe de tafel past in zowel een compacte als een ruime eetkamer."},
+    {"slug": "draaipoort-op-het-erf", "file": "draaipoort-erf.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
+     "mt": "Een draaipoort op het erf: stijl, veiligheid en gebruik",
+     "meta": "Waar op te letten bij een draaipoort voor oprit of erf: benodigde ruimte, stijl van de woning, hekwerk, handmatig of automatisch openen, maatwerk en onderhoud."},
+    {"slug": "kleine-kinderkamer-slim-indelen", "file": "kleine-kinderkamer.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
+     "mt": "Kleine kinderkamer slim indelen",
+     "meta": "Slapen, spelen en leren in een kleine kinderkamer: functies bepalen, de hoogte benutten met een halfhoogslaper, speelruimte, opbergen, kleur en verlichting."},
     {"slug": "vochtvlekken-plafond-eerst-de-oorzaak", "file": "vochtvlekken-plafond.txt", "datum": "2026-09-27", "datum_nl": "27 september 2026",
      "mt": "Vochtvlekken op het plafond: eerst de oorzaak, dan de verf",
      "meta": "Waarom een vochtvlek op het plafond niet zomaar overgeschilderd wordt, hoe de oorzaak wordt gevonden en wanneer het dak de bron is."},

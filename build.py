@@ -74,6 +74,7 @@ aside.side{position:sticky;top:24px;align-self:start;display:flex;flex-direction
 .page{max-width:40em;padding:48px 0 64px}
 .page h1{font-size:clamp(32px,4.4vw,46px);font-weight:400;line-height:1.1;margin:0 0 24px}
 .page h2{font-weight:400;font-size:25px;margin:34px 0 10px}
+.page h3{font-weight:400;font-size:20px;margin:26px 0 8px}
 .page p,.page li{margin:0 0 16px}
 footer.foot{border-top:3px double var(--line);padding:34px 0 44px;color:var(--muted);font-size:14.5px}
 footer.foot .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px 30px}
@@ -278,7 +279,8 @@ def _blog_src(b):
     for l in lines[1:]:
         if l.startswith("- "): ul.append(l[2:]); continue
         flush()
-        if l.startswith("## "): o.append("<h2>%s</h2>" % esc(l[3:]))
+        if l.startswith("### "): o.append("<h3>%s</h3>" % esc(l[4:]))
+        elif l.startswith("## "): o.append("<h2>%s</h2>" % esc(l[3:]))
         else: o.append("<p>%s</p>" % _inline(l))
     flush()
     return h1, "\n".join(o)
@@ -313,6 +315,7 @@ PARTNERS = [
     ('Nazrom', 'Nazrom verkoopt inductiebeschermers en inductiematjes die een kookplaat beschermen tegen krassen, tijdens en na het koken.', 'https://www.nazrom.nl/', 'nazrom.nl'),
     ('Zandcompleet', 'Zandcompleet levert zand, grind, split en grond, in bigbags of losgestort, met levering door heel Nederland.', 'https://www.zandcompleet.nl/', 'zandcompleet.nl'),
     ('Bedshop', 'Bedshop verkoopt beddengoed en bedtextiel, met hoeslakens in katoen, jersey en percal voor de gangbare matrasmaten.', 'https://www.bedshop.nl/bedmode/bedtextiel/hoeslakens/', 'hoeslakens'),
+    ('Beinhouse', 'Beinhouse verkoopt behang en wanddecoratie, waaronder de collecties van het Belgische merk Arte.', 'https://beinhouse.nl/collections/arte-behang', 'Arte behang'),
 ]
 
 def partners():
