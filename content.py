@@ -334,6 +334,9 @@ OVER = {
 
 # Blogs van externe auteurs; brontekst staat in blog/<file>.
 BLOGS = [
+    {"slug": "glazen-op-tafel-vorm-dikte-en-servies", "file": "glazen-op-tafel.txt", "datum": "2026-10-06", "datum_nl": "6 oktober 2026",
+     "mt": "Glazen op tafel: vorm, dikte en servies",
+     "meta": "Glaswerk kiezen voor een gedekte tafel: welke vormen nodig zijn, dun of dik glas, afstemmen op servies, aantallen per persoon en onderhoud."},
     {"slug": "tijdelijke-woning-aankleden", "file": "tijdelijke-woning-aankleden.txt", "datum": "2026-09-28", "datum_nl": "28 september 2026",
      "mt": "Een tijdelijke woning aankleden in een paar dagen",
      "meta": "Een kale tijdelijke woning in enkele dagen bewoonbaar maken: wat eerst komt, raamdecoratie en vloer, neutrale keuzes, montage en kopen of huren."},
